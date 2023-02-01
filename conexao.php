@@ -1,7 +1,7 @@
 <?php
 $HOST = "aws-sa-east-1.connect.psdb.cloud";
-$USERNAME = "smwtjehkm3ky0z8zzbvj";
-$PASSWORD = "pscale_pw_A6tAIL5oSE6usBu54IdCcfLyDMxDhYMiE0t4Wn8THnc";
+$USERNAME = "nsjkrpnb9n3u93bthfui";
+$PASSWORD = "pscale_pw_9iK5RzHduNKUtaPcupxApWBV9pt3uCbXf6hFEvB3o8a";
 $DATABASE = "formulario";
 
 //Criar a conexao
