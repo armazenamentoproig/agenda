@@ -6,4 +6,7 @@ $database = "formulario";
 
 //Criar a conexao
 $conn = mysqli_connect($host, $username, $password, $database);
-?>
+if (!$conn) {
+    die("Conexão falhou: " . mysqli_connect_error());
+}
+
