@@ -16,3 +16,4 @@ if ($mysqli->connect_error) {
 } else {
     echo "Successfully connected to the database";
 }
+?>
