@@ -1,19 +1,9 @@
 <?php
-$hostname=$_ENV['HOST'];
-$dbName = $_ENV['DATABASE'];
-$username = $_ENV['USERNAME'];
-$password = $_ENV['PASSWORD'];
-$port = $_ENV['3306'];
-$ssl = $_ENV['MYSQL_ATTR_SSL_CA'];
+error_reporting(E_STRICT);
 
-// Set SSL cert and open connection to the MySQL server
 $mysqli = mysqli_init();
-$mysqli->ssl_set(NULL, NULL, $ssl, NULL, NULL);
-$mysqli->real_connect($hostname, $dbName, $username, $password, $port);
-
-if ($mysqli->connect_error) {
-    echo "Not connected to the database";
-} else {
-    echo "Successfully connected to the database";
-}
+$mysqli->ssl_set(NULL, NULL, "/etc/ssl/certs/ca-certificates.crt", NULL, NULL);
+$mysqli->real_connect('[aws-sa-east-1.connect.psdb.cloud]', '[ioudoj7c787zzow91xbp]', '[pscale_pw_b9NXLvxy1gtj3EJA7JrPitgv48QPwqeXjm03FzDKjH8]', '[formulario]');
+$mysqli->close();
 ?>
+Successfully connected to PlanetScale!
