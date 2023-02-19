@@ -79,3 +79,30 @@
 		<h2>Vincular os servidores nas unidades</h2>
 		<p>Sem previsão.</p>
 		<label><input type="checkbox"
+<script>
+	let tasks = document.querySelectorAll('.task');
+
+	for (let i = 0; i < tasks.length; i++) {
+		let task = tasks[i];
+		let checkbox = task.querySelector('input[type="checkbox"]');
+		let key = 'task-' + i;
+
+		// Load saved completed state
+		let completed = localStorage.getItem(key);
+		if (completed === 'true') {
+			task.classList.add('completed');
+			checkbox.checked = true;
+		}
+
+		// Save completed state on checkbox change
+		checkbox.addEventListener('change', function() {
+			if (this.checked) {
+				localStorage.setItem(key, 'true');
+				task.classList.add('completed');
+			} else {
+				localStorage.removeItem(key);
+				task.classList.remove('completed');
+			}
+		});
+	}
+</script>
