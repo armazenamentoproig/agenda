@@ -51,15 +51,59 @@
 			font-weight: bold;
 		}
 	</style>
-	<div class="task" id="task-0">
-	<h2>Abrir chamado</h2>
-	<p>Verificar os erros para definir um horário para as turmas na unidades (Urgência)</p>
-	<label><input type="checkbox" name="completed" value="1"> Concluído</label>
-</div>
+<script>
+	// Função para salvar o estado da tarefa no Local Storage
+	function saveTaskState(taskIndex, isCompleted) {
+		// Obter o array de tarefas do Local Storage
+		let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
+		// Atualizar o estado da tarefa
+		tasks[taskIndex].completed = isCompleted;
+
+		// Salvar o array de tarefas atualizado no Local Storage
+		localStorage.setItem('tasks', JSON.stringify(tasks));
+	}
+
+	// Função para carregar o estado das tarefas do Local Storage
+	function loadTaskState() {
+		// Obter o array de tarefas do Local Storage
+		let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+		// Atualizar o estado das tarefas na página
+		tasks.forEach((task, index) => {
+			let taskElement = document.getElementById('task-' + index);
+			if (task.completed) {
+				taskElement.classList.add('completed');
+				taskElement.querySelector('input[type="checkbox"]').checked = true;
+			}
+		});
+	}
+
+	// Adicionar um evento "change" nos checkboxes
+	let checkboxes = document.querySelectorAll('input[type="checkbox"]');
+	checkboxes.forEach((checkbox, index) => {
+		checkbox.addEventListener('change', () => {
+			// Salvar o estado da tarefa no Local Storage
+			saveTaskState(index, checkbox.checked);
+
+			// Adicionar ou remover a classe "completed" na tarefa
+			let taskElement = document.getElementById('task-' + index);
+			if (checkbox.checked) {
+				taskElement.classList.add('completed');
+			} else {
+				taskElement.classList.remove('completed');
+			}
+		});
+	});
+
+	// Adicionar um evento "load" para carregar o estado das tarefas do Local Storage
+	window.addEventListener('load', loadTaskState);
+</script>
+
+	
 </head>
 <body>
-	<div class="task" id="task-0">
+<div class="task" id="task-0">
 	<h2>Abrir chamado</h2>
 	<p>Verificar os erros para definir um horário para as turmas na unidades (Urgência)</p>
 	<label><input type="checkbox" name="completed" value="1"> Concluído</label>
