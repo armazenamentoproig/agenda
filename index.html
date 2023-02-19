@@ -52,12 +52,12 @@
 	</style>
 </head>
 <body>
-	<div class="task">
-		<div class="date">Quinta-feira, XX de XXXXXXX de 2023</div>
-		<h2>Abrir chamado</h2>
-		<p>Verificar os erros para definir um horário para as turmas na unidades (Urgência)</p>
-		<label><input type="checkbox" name="completed" value="1"> Concluído</label>
-	</div>
+	<div class="task" id="task1">
+      <h2>Abrir chamado</h2>
+      <p>Verificar os erros para definir um horário para as turmas na unidades (Urgência)</p>
+      <label><input type="checkbox" name="completed" value="1"> Concluído</label>
+      </div>
+
 	<div class="task">
 		<h2>Criação das turmas</h2>
 		<p></p>
@@ -88,21 +88,22 @@
 		<h2>Vincular os servidores nas unidades</h2>
 		<p>Sem previsão.</p>
 		<label><input type="checkbox"
-
+			  
 	<script>
-		// Seleciona todos os elementos checkbox na página
-		const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
-		// Percorre cada checkbox e adiciona um listener de evento para salvar o estado no armazenamento local
-		checkboxes.forEach(function(checkbox) {
-			// Carrega o estado salvo para o checkbox atual, se houver
-			checkbox.checked = localStorage.getItem(checkbox.name) === 'true';
+  function saveState() {
+    checkboxes.forEach((checkbox) => {
+      localStorage.setItem(checkbox.parentNode.parentNode.id, checkbox.checked);
+    });
+  }
 
-			// Adiciona o listener de evento para salvar o estado do checkbox no armazenamento local
-			checkbox.addEventListener('change', function() {
-				localStorage.setItem(this.name, this.checked);
-			});
-		});
-	</script>
+  checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener('change', saveState);
+  });
+</script>
+
+
+	
 </body>
 </html>
