@@ -5,6 +5,7 @@
 	<style>
 		/* Estilos CSS */
 	</style>
+	
 </head>
 <body>
 	<!DOCTYPE html>
@@ -50,59 +51,19 @@
 			font-weight: bold;
 		}
 	</style>
+	<div class="task" id="task-0">
+	<h2>Abrir chamado</h2>
+	<p>Verificar os erros para definir um horário para as turmas na unidades (Urgência)</p>
+	<label><input type="checkbox" name="completed" value="1"> Concluído</label>
+</div>
+
 </head>
 <body>
-	<div class="task" id="task1">
-      <h2>Abrir chamado</h2>
-      <p>Verificar os erros para definir um horário para as turmas na unidades (Urgência)</p>
-      <label><input type="checkbox" name="completed" value="1"> Concluído</label>
-      </div>
-
-	<div class="task">
-		<h2>Criação das turmas</h2>
-		<p></p>
-		<label><input type="checkbox" name="completed" value="1"> Concluído</label>
-	</div>
-	<div class="task">
-		<h2>Enturmação</h2>
-		<p></p>
-		<label><input type="checkbox" name="completed" value="1"> Concluído</label>
-	</div>
-	<div class="task">
-		<h2>Quadro de horário</h2>
-		<p></p>
-		<label><input type="checkbox" name="completed" value="1"> Concluído</label>
-	</div>
-	<div class="task">
-		<h2>Alocação dos professores</h2>
-		<p>Ainda não iniciou. Previsão de 15 dias para começar. Setor responsável (RH)</p>
-		<label><input type="checkbox" name="completed" value="1"> Concluído</label>
-	</div>
-	<div class="task">
-		<h2>Número de Chamada</h2>
-		<p>Após terminar o processo de enturmação, gerar o número de chamada dos alunos (Organizar as turmas).</p>
-		<p>Diário de Classe &gt; Número de Chamada</p>
-		<label><input type="checkbox" name="completed" value="1"> Concluído</label>
-	</div>
-	<div class="task">
-		<h2>Vincular os servidores nas unidades</h2>
-		<p>Sem previsão.</p>
-		<label><input type="checkbox"
-			  
-		
+	<div class="task" id="task-0">
+	<h2>Abrir chamado</h2>
+	<p>Verificar os erros para definir um horário para as turmas na unidades (Urgência)</p>
+	<label><input type="checkbox" name="completed" value="1"> Concluído</label>
+</div>
+	
 </body>
-<script>
-  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-
-  function saveState() {
-    checkboxes.forEach((checkbox) => {
-      localStorage.setItem(checkbox.parentNode.parentNode.id, checkbox.checked);
-    });
-  }
-
-  checkboxes.forEach((checkbox) => {
-    checkbox.addEventListener('change', saveState);
-  });
-</script>
-
 </html>
