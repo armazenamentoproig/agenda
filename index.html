@@ -1,113 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Agenda para quinta-feira</title>
-	<style>
-		/* Estilos CSS */
-	</style>
-	
-</head>
-<body>
-	<!DOCTYPE html>
-<html>
-<head>
-	<title>Agenda para quinta-feira</title>
-	<style>
-		body {
-			background-color: #f2f2f2;
-			font-family: Arial, sans-serif;
-		}
-		.task {
-			background-color: white;
-			padding: 20px;
-			border-radius: 10px;
-			box-shadow: 0px 0px 10px grey;
-			width: 600px;
-			margin: auto;
-			margin-top: 50px;
-			text-align: left;
-			line-height: 1.5;
-			margin-bottom: 20px;
-		}
-		h1 {
-			font-size: 24px;
-			margin-top: 0;
-		}
-		h2 {
-			font-size: 20px;
-			margin-top: 0;
-		}
-		p {
-			font-size: 18px;
-			margin: 0;
-		}
-		.date {
-			font-size: 16px;
-			font-weight: bold;
-			margin-bottom: 10px;
-		}
-		.completed {
-			color: green;
-			font-weight: bold;
-		}
-	</style>
-<script>
-	// Função para salvar o estado da tarefa no Local Storage
-	function saveTaskState(taskIndex, isCompleted) {
-		// Obter o array de tarefas do Local Storage
-		let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-jfeed/1.1.0/jquery.jfeed.min.js"></script>
+<div id="news"></div>
+$(document).ready(function() {
+    $('#news').jFeed({
+        url: 'https://petrolina.pe.gov.br/feed',
+        numEntries: 10,
+        success: function(feed) {
+            for(var i = 0; i < feed.entries.length; i++) {
+                var entry = feed.entries[i];
+                $('#news').append('<h3>' + entry.title + '</h3>');
+                $('#news').append('<p>' + entry.content + '</p>');
+            }
+        }
+    });
+});
 
-		// Atualizar o estado da tarefa
-		tasks[taskIndex].completed = isCompleted;
-
-		// Salvar o array de tarefas atualizado no Local Storage
-		localStorage.setItem('tasks', JSON.stringify(tasks));
-	}
-
-	// Função para carregar o estado das tarefas do Local Storage
-	function loadTaskState() {
-		// Obter o array de tarefas do Local Storage
-		let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-
-		// Atualizar o estado das tarefas na página
-		tasks.forEach((task, index) => {
-			let taskElement = document.getElementById('task-' + index);
-			if (task.completed) {
-				taskElement.classList.add('completed');
-				taskElement.querySelector('input[type="checkbox"]').checked = true;
-			}
-		});
-	}
-
-	// Adicionar um evento "change" nos checkboxes
-	let checkboxes = document.querySelectorAll('input[type="checkbox"]');
-	checkboxes.forEach((checkbox, index) => {
-		checkbox.addEventListener('change', () => {
-			// Salvar o estado da tarefa no Local Storage
-			saveTaskState(index, checkbox.checked);
-
-			// Adicionar ou remover a classe "completed" na tarefa
-			let taskElement = document.getElementById('task-' + index);
-			if (checkbox.checked) {
-				taskElement.classList.add('completed');
-			} else {
-				taskElement.classList.remove('completed');
-			}
-		});
-	});
-
-	// Adicionar um evento "load" para carregar o estado das tarefas do Local Storage
-	window.addEventListener('load', loadTaskState);
-</script>
-
-	
-</head>
-<body>
-<div class="task" id="task-0">
-	<h2>Abrir chamado</h2>
-	<p>Verificar os erros para definir um horário para as turmas na unidades (Urgência)</p>
-	<label><input type="checkbox" name="completed" value="1"> Concluído</label>
-</div>
-	
-</body>
-</html>
