@@ -3,6 +3,8 @@
 <head>
 	<title>Notícias do Exemplo.com</title>
 	<meta charset="utf-8">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-jfeed/1.1.0/jquery.jfeed.min.js"></script>
 	<style type="text/css">
 		h3 {
 			margin-top: 20px;
@@ -13,33 +15,17 @@
 	</style>
 </head>
 <body>
-	<h1>Notícias do Exemplo.com</h1>
 	<div id="news"></div>
 	<script type="text/javascript">
-		fetch('http://feeds.bbci.co.uk/news/rss.xml')
-			.then(response => response.text())
-			.then(xml => {
-				const parser = new DOMParser();
-				const xmlDoc = parser.parseFromString(xml, 'application/xml');
-				const items = xmlDoc.querySelectorAll('item');
-				items.forEach(item => {
-					const title = item.querySelector('title').textContent;
-					const link = item.querySelector('link').textContent;
-					const description = item.querySelector('description').textContent;
-					const pubDate = item.querySelector('pubDate').textContent;
-					const h3 = document.createElement('h3');
-					const a = document.createElement('a');
-					const p = document.createElement('p');
-					h3.textContent = title;
-					a.href = link;
-					a.textContent = link;
-					p.innerHTML = description + '<br />' + pubDate;
-					document.querySelector('#news').appendChild(h3);
-					document.querySelector('#news').appendChild(a);
-					document.querySelector('#news').appendChild(p);
+		$(document).ready(function() {
+			$.get('http://feeds.bbci.co.uk/news/rss.xml', function(data) {
+				$(data).find("item").each(function() {
+					var el = $(this);
+					$('#news').append('<h3>' + el.find("title").text() + '</h3>');
+					$('#news').append('<p>' + el.find("description").text() + '</p>');
 				});
-			})
-			.catch(err => console.log(err));
+			});
+		});
 	</script>
 </body>
 </html>
