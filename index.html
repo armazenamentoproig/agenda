@@ -15,22 +15,19 @@
 	</style>
 </head>
 <body>
-	<h1>Notícias do Exemplo.com</h1>
-	<div id="news"></div>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$('#news').jFeed({
-				url: 'http://feeds.bbci.co.uk/news/rss.xml',
-				numEntries: 10,
-				success: function(feed) {
-					for(var i = 0; i < feed.entries.length; i++) {
-						var entry = feed.entries[i];
-						$('#news').append('<h3>' + entry.title + '</h3>');
-						$('#news').append('<p>' + entry.content + '</p>');
-					}
-				}
-			});
-		});
-	</script>
+	import requests
+import xml.etree.ElementTree as ET
+
+url = 'http://feeds.bbci.co.uk/news/rss.xml'
+response = requests.get(url)
+
+root = ET.fromstring(response.content)
+for item in root.iter('item'):
+    title = item.find('title').text
+    link = item.find('link').text
+    print(title)
+    print(link)
+    print()
+
 </body>
 </html>
