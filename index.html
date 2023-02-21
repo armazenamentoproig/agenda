@@ -20,7 +20,7 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('#news').jFeed({
-				url: 'http://feeds.bbci.co.uk/news/rss.xml',
+				url: 'http://feeds.bbci.co.uk/news/rss.xml#',
 				numEntries: 10,
 				success: function(feed) {
 					for(var i = 0; i < feed.entries.length; i++) {
