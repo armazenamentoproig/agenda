@@ -1,17 +1,36 @@
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-jfeed/1.1.0/jquery.jfeed.min.js"></script>
-<div id="news"></div>
-$(document).ready(function() {
-    $('#news').jFeed({
-        url: 'https://petrolina.pe.gov.br/feed',
-        numEntries: 10,
-        success: function(feed) {
-            for(var i = 0; i < feed.entries.length; i++) {
-                var entry = feed.entries[i];
-                $('#news').append('<h3>' + entry.title + '</h3>');
-                $('#news').append('<p>' + entry.content + '</p>');
-            }
-        }
-    });
-});
-
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Notícias do Exemplo.com</title>
+	<meta charset="utf-8">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-jfeed/1.1.0/jquery.jfeed.min.js"></script>
+	<style type="text/css">
+		h3 {
+			margin-top: 20px;
+		}
+		p {
+			margin-bottom: 40px;
+		}
+	</style>
+</head>
+<body>
+	<h1>Notícias do Exemplo.com</h1>
+	<div id="news"></div>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#news').jFeed({
+				url: 'http://feeds.bbci.co.uk/news/rss.xml',
+				numEntries: 10,
+				success: function(feed) {
+					for(var i = 0; i < feed.entries.length; i++) {
+						var entry = feed.entries[i];
+						$('#news').append('<h3>' + entry.title + '</h3>');
+						$('#news').append('<p>' + entry.content + '</p>');
+					}
+				}
+			});
+		});
+	</script>
+</body>
+</html>
