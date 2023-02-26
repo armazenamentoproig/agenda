@@ -1,31 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Notícias do Exemplo.com</title>
-	<meta charset="utf-8">
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-jfeed/1.1.0/jquery.jfeed.min.js"></script>
-	<style type="text/css">
-		h3 {
-			margin-top: 20px;
-		}
-		p {
-			margin-bottom: 40px;
-		}
-	</style>
+	<title>Relatório Looker</title>
 </head>
 <body>
-	<div id="news"></div>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$.get('http://feeds.bbci.co.uk/news/rss.xml', function(data) {
-				$(data).find("item").each(function() {
-					var el = $(this);
-					$('#news').append('<h3>' + el.find("title").text() + '</h3>');
-					$('#news').append('<p>' + el.find("description").text() + '</p>');
-				});
-			});
-		});
-	</script>
+	<iframe width="600" height="450" src="https://lookerstudio.google.com/embed/reporting/18875dc5-c3ed-44b0-9849-7f576e78a5ca/page/FVgGD" frameborder="0" style="border:0" allowfullscreen></iframe>
 </body>
 </html>
