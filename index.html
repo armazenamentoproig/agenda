@@ -2,45 +2,68 @@
 <html>
 <head>
     <title>Consulta de Contracheque</title>
+    <script src="https://apis.google.com/js/api.js"></script>
     <script>
-        function consultarContracheque() {
-            // Obtém o valor digitado no campo de matrícula
-            var matricula = document.getElementById('matricula').value;
+        function autenticarGoogleDrive() {
+            gapi.load('client:auth2', iniciarAutenticacao);
+        }
 
-            // Aqui você pode implementar a lógica para consultar o contracheque no backend ou em um banco de dados
+        function iniciarAutenticacao() {
+            gapi.client.init({
+                apiKey: 'SUA_API_KEY',
+                clientId: 'SEU_CLIENT_ID',
+                discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
+                scope: 'https://www.googleapis.com/auth/drive.readonly'
+            }).then(function() {
+                gapi.auth2.getAuthInstance().signIn().then(buscarContracheque);
+            });
+        }
 
-            // Exemplo de resposta
-            var resposta = {
-                nome: 'Fulano de Tal',
-                salario: 5000,
-                beneficios: ['Vale Alimentação', 'Plano de Saúde']
-            };
+        function buscarContracheque() {
+            gapi.client.drive.files.list({
+                q: "name = 'contracheque.txt'", // Nome do arquivo que você deseja buscar
+                fields: 'files(id, name)',
+                pageSize: 1
+            }).then(function(response) {
+                var files = response.result.files;
+                if (files && files.length > 0) {
+                    var fileId = files[0].id;
+                    baixarArquivo(fileId);
+                } else {
+                    console.log('Arquivo não encontrado.');
+                }
+            });
+        }
 
-            // Cria o conteúdo do arquivo
-            var conteudoArquivo = "Nome: " + resposta.nome + "\n";
-            conteudoArquivo += "Salário: R$ " + resposta.salario.toFixed(2) + "\n";
-            conteudoArquivo += "Benefícios: " + resposta.beneficios.join(', ');
-
-            // Cria um elemento de link para download
-            var linkDownload = document.createElement('a');
-            linkDownload.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(conteudoArquivo);
-            linkDownload.download = 'contracheque.txt';
-            linkDownload.innerHTML = 'Clique aqui para baixar o contracheque';
-
-            // Adiciona o link de download à página
-            var resultadoContainer = document.getElementById('resultado');
-            resultadoContainer.innerHTML = ''; // Limpa o conteúdo anterior
-            resultadoContainer.appendChild(linkDownload);
+        function baixarArquivo(fileId) {
+            gapi.client.drive.files.get({
+                fileId: fileId,
+                alt: 'media'
+            }).then(function(response) {
+                var conteudoArquivo = response.body;
+                var linkDownload = document.createElement('a');
+                linkDownload.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(conteudoArquivo);
+                linkDownload.download = 'contracheque.txt';
+                linkDownload.innerHTML = 'Clique aqui para baixar o contracheque';
+                var resultadoContainer = document.getElementById('resultado');
+                resultadoContainer.innerHTML = '';
+                resultadoContainer.appendChild(linkDownload);
+            });
         }
     </script>
 </head>
 <body>
     <h1>Consulta de Contracheque</h1>
-    <label for="matricula">Matrícula:</label>
-    <input type="text" id="matricula">
-    <button onclick="consultarContracheque()">Consultar</button>
+    <button onclick="autenticarGoogleDrive()">Consultar</button>
 
     <h2>Resultado:</h2>
     <div id="resultado"></div>
+
+    <!-- Adicione as credenciais do seu projeto abaixo -->
+    <script>
+        var SUA_API_KEY = 'SUA_API_KEY';
+        var SEU_CLIENT_ID = 'SEU_CLIENT_ID';
+    </script>
+    <script src="https://apis.google.com/js/client.js?onload=autenticarGoogleDrive"></script>
 </body>
 </html>
