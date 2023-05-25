@@ -16,10 +16,21 @@
                 beneficios: ['Vale Alimentação', 'Plano de Saúde']
             };
 
-            // Exibe os resultados na página
-            document.getElementById('nome').textContent = resposta.nome;
-            document.getElementById('salario').textContent = 'R$ ' + resposta.salario.toFixed(2);
-            document.getElementById('beneficios').textContent = resposta.beneficios.join(', ');
+            // Cria o conteúdo do arquivo
+            var conteudoArquivo = "Nome: " + resposta.nome + "\n";
+            conteudoArquivo += "Salário: R$ " + resposta.salario.toFixed(2) + "\n";
+            conteudoArquivo += "Benefícios: " + resposta.beneficios.join(', ');
+
+            // Cria um elemento de link para download
+            var linkDownload = document.createElement('a');
+            linkDownload.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(conteudoArquivo);
+            linkDownload.download = 'contracheque.txt';
+            linkDownload.innerHTML = 'Clique aqui para baixar o contracheque';
+
+            // Adiciona o link de download à página
+            var resultadoContainer = document.getElementById('resultado');
+            resultadoContainer.innerHTML = ''; // Limpa o conteúdo anterior
+            resultadoContainer.appendChild(linkDownload);
         }
     </script>
 </head>
@@ -30,8 +41,6 @@
     <button onclick="consultarContracheque()">Consultar</button>
 
     <h2>Resultado:</h2>
-    <p>Nome: <span id="nome"></span></p>
-    <p>Salário: <span id="salario"></span></p>
-    <p>Benefícios: <span id="beneficios"></span></p>
+    <div id="resultado"></div>
 </body>
 </html>
