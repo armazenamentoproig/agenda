@@ -1,9 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Relatório Looker</title>
+    <title>Consulta de Contracheque</title>
+    <script>
+        function consultarContracheque() {
+            // Obtém o valor digitado no campo de matrícula
+            var matricula = document.getElementById('matricula').value;
+
+            // Aqui você pode implementar a lógica para consultar o contracheque no backend ou em um banco de dados
+
+            // Exemplo de resposta
+            var resposta = {
+                nome: 'Fulano de Tal',
+                salario: 5000,
+                beneficios: ['Vale Alimentação', 'Plano de Saúde']
+            };
+
+            // Exibe os resultados na página
+            document.getElementById('nome').textContent = resposta.nome;
+            document.getElementById('salario').textContent = 'R$ ' + resposta.salario.toFixed(2);
+            document.getElementById('beneficios').textContent = resposta.beneficios.join(', ');
+        }
+    </script>
 </head>
 <body>
-	<iframe width="1200" height="900" src="https://lookerstudio.google.com/embed/reporting/7c5ec0e8-b007-4dc8-b910-c47b83864583/page/LLEJD" frameborder="0" style="border:0" allowfullscreen></iframe>
+    <h1>Consulta de Contracheque</h1>
+    <label for="matricula">Matrícula:</label>
+    <input type="text" id="matricula">
+    <button onclick="consultarContracheque()">Consultar</button>
+
+    <h2>Resultado:</h2>
+    <p>Nome: <span id="nome"></span></p>
+    <p>Salário: <span id="salario"></span></p>
+    <p>Benefícios: <span id="beneficios"></span></p>
 </body>
 </html>
