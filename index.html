@@ -1,69 +1,57 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Consulta de Contracheque</title>
-    <script src="https://apis.google.com/js/api.js"></script>
-    <script>
-        function autenticarGoogleDrive() {
-            gapi.load('client:auth2', iniciarAutenticacao);
-        }
+import os
+import pickle
+from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient.discovery import build
 
-        function iniciarAutenticacao() {
-            gapi.client.init({
-                apiKey: 'SUA_API_KEY',
-                clientId: 'SEU_CLIENT_ID',
-                discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
-                scope: 'https://www.googleapis.com/auth/drive.readonly'
-            }).then(function() {
-                gapi.auth2.getAuthInstance().signIn().then(buscarContracheque);
-            });
-        }
+# Defina as credenciais do cliente
+CLIENT_ID = 'SEU_CLIENT_ID'
+CLIENT_SECRET = 'SEU_CLIENT_SECRET'
+API_NAME = 'drive'
+API_VERSION = 'v3'
+SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
 
-        function buscarContracheque() {
-            gapi.client.drive.files.list({
-                q: "name = 'contracheque.txt'", // Nome do arquivo que você deseja buscar
-                fields: 'files(id, name)',
-                pageSize: 1
-            }).then(function(response) {
-                var files = response.result.files;
-                if (files && files.length > 0) {
-                    var fileId = files[0].id;
-                    baixarArquivo(fileId);
-                } else {
-                    console.log('Arquivo não encontrado.');
-                }
-            });
-        }
+# Configuração da autenticação
+def autenticar():
+    creds = None
+    # O arquivo token.pickle armazenará as credenciais de acesso
+    if os.path.exists('token.pickle'):
+        with open('token.pickle', 'rb') as token:
+            creds = pickle.load(token)
+    # Se não houver credenciais válidas disponíveis, solicita a autenticação do usuário
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file(
+                'credentials.json', SCOPES)
+            creds = flow.run_local_server(port=0)
+        # Salva as credenciais para uso futuro
+        with open('token.pickle', 'wb') as token:
+            pickle.dump(creds, token)
+    return creds
 
-        function baixarArquivo(fileId) {
-            gapi.client.drive.files.get({
-                fileId: fileId,
-                alt: 'media'
-            }).then(function(response) {
-                var conteudoArquivo = response.body;
-                var linkDownload = document.createElement('a');
-                linkDownload.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(conteudoArquivo);
-                linkDownload.download = 'contracheque.txt';
-                linkDownload.innerHTML = 'Clique aqui para baixar o contracheque';
-                var resultadoContainer = document.getElementById('resultado');
-                resultadoContainer.innerHTML = '';
-                resultadoContainer.appendChild(linkDownload);
-            });
-        }
-    </script>
-</head>
-<body>
-    <h1>Consulta de Contracheque</h1>
-    <button onclick="autenticarGoogleDrive()">Consultar</button>
+# Função para buscar e baixar arquivos
+def buscar_e_baixar_arquivos():
+    creds = autenticar()
+    # Cria o serviço da API do Google Drive
+    service = build(API_NAME, API_VERSION, credentials=creds)
+    # Faz uma requisição para listar os arquivos
+    results = service.files().list().execute()
+    files = results.get('files', [])
+    # Itera sobre os arquivos e faz o download
+    for file in files:
+        file_id = file['id']
+        file_name = file['name']
+        request = service.files().get_media(fileId=file_id)
+        fh = io.BytesIO()
+        downloader = MediaIoBaseDownload(fh, request)
+        done = False
+        while not done:
+            status, done = downloader.next_chunk()
+        # Salva o arquivo baixado
+        with open(file_name, 'wb') as f:
+            f.write(fh.getvalue())
+        print(f'Arquivo "{file_name}" baixado com sucesso.')
 
-    <h2>Resultado:</h2>
-    <div id="resultado"></div>
-
-    <!-- Adicione as credenciais do seu projeto abaixo -->
-    <script>
-        var SUA_API_KEY = 'SUA_API_KEY';
-        var SEU_CLIENT_ID = 'SEU_CLIENT_ID';
-    </script>
-    <script src="https://apis.google.com/js/client.js?onload=autenticarGoogleDrive"></script>
-</body>
-</html>
+# Chamada da função para buscar e baixar arquivos
+buscar_e_baixar_arquivos()
