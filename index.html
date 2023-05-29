@@ -1,7 +1,9 @@
 import os
+import io
 import pickle
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
+from googleapiclient.http import MediaIoBaseDownload
 
 # Defina as credenciais do cliente
 CLIENT_ID = 'SEU_CLIENT_ID'
